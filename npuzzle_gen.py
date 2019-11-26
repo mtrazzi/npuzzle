@@ -3,6 +3,7 @@
 import sys
 import argparse
 import random
+import os
 
 def make_puzzle(s, solvable, iterations):
     def swap_empty(p):
@@ -58,41 +59,31 @@ def make_goal(s):
 
     return puzzle
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+def puzzle_from_text(filename, dir_name='puzzles'):
+    path = os.path.join(dir_name, filename)
+    with open(path, 'r') as f:
+        lines = [list(l.rstrip('\n')) for l in f]
+    return lines[1:]
 
-    parser.add_argument("size", type=int, help="Size of the puzzle's side. Must be >3.")
-    parser.add_argument("-s", "--solvable", action="store_true", default=False, help="Forces generation of a solvable puzzle. Overrides -u.")
-    parser.add_argument("-u", "--unsolvable", action="store_true", default=False, help="Forces generation of an unsolvable puzzle")
-    parser.add_argument("-i", "--iterations", type=int, default=10000, help="Number of passes")
+def generate_puzzle_tab(solvable, unsolvable, size, iterations, filename):
+    if filename:
+        return puzzle_from_text(filename)
 
-    args = parser.parse_args()
-
-    random.seed()
-
-    if args.solvable and args.unsolvable:
+    if solvable and unsolvable:
         print("Can't be both solvable AND unsolvable, dummy !")
         sys.exit(1)
 
-    if args.size < 3:
+    if size < 3:
         print("Can't generate a puzzle with size lower than 2. It says so in the help. Dummy.")
         sys.exit(1)
 
-    if not args.solvable and not args.unsolvable:
+    if not solvable and not unsolvable:
         solv = random.choice([True, False])
-    elif args.solvable:
+    elif solvable:
         solv = True
-    elif args.unsolvable:
+    elif unsolvable:
         solv = False
 
-    s = args.size
+    s = size
 
-    puzzle = make_puzzle(s, solvable=solv, iterations=args.iterations)
-
-    w = len(str(s*s))
-    print("# This puzzle is %s" % ("solvable" if solv else "unsolvable"))
-    print("%d" % s)
-    for y in range(s):
-        for x in range(s):
-            print("%s" % (str(puzzle[x + y*s]).rjust(w)), end='')
-        print()
+    return make_puzzle(s, solvable=solv, iterations=iterations)
