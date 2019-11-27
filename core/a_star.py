@@ -1,5 +1,26 @@
 import numpy as np
 
+def find_coord_in_list(l, elt):
+  size = int(np.sqrt(len(l)))
+  for i in range(size):
+    for j in range(size):
+      if l[i * size + j] == elt:
+        return i, j
+
+def heuristic(goal, state, name='tiles-out'):
+  s = 0
+  size = int(np.sqrt(len(goal)))
+  for x in range (size):
+    for y in range (size):
+      x_g, y_g = find_coord_in_list(goal, state[x * size + y])
+      if name == 'tiles-out':
+        s += x != x_g or y != y_g
+      elif name == 'manhattan':
+        s += abs(x-x_g) + abs(y-y_g)
+      elif name == 'euclidean':
+        s += np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
+  return s
+
 def reconstruct_path(cameFrom, current):
   total_path = [current]
   while current in cameFrom.keys():
@@ -31,10 +52,6 @@ def A_Star(start, hname='euclidean'):
     current = find_lowest_fScore(openSet, fScore)
     if current.state == current.goal:
       return reconstruct_path(cameFrom, current)
-
-    # for idx in range(len(openSet)):
-    #   if openSet[idx].state == current.state:
-    #     openSet.remove(openSet[idx])
 
     openSet.remove(current)
     fScore[current] = np.Inf

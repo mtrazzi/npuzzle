@@ -17,19 +17,6 @@ class Puzzle(object):
     self.grid = [[puzzle[x * self.size + y] for y in range(self.size)] for x in range(self.size)]
     self.goal_grid = [[make_goal(self.size)[x * self.size + y] for y in range(self.size)] for x in range(self.size)]
 
-  def heuristic(self, name='tiles-out'):
-    s = 0
-    for x in range (self.size):
-      for y in range (self.size):
-        x_g, y_g = find_coordinates(self.goal_grid, self.grid[x][y])
-        if name == 'tiles-out':
-          s += x != x_g or y != y_g
-        elif name == 'manhattan':
-          s += abs(x-x_g) + abs(y-y_g)
-        elif name == 'euclidean':
-          s += np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
-    return s
-
   def next_state(self, move):
     x_0, y_0 = find_coordinates(self.grid, 0)
     neighbor_candidate = copy.deepcopy(self)
