@@ -20,16 +20,17 @@ class Puzzle(object):
   def next_state(self, move):
     x_0, y_0 = find_coordinates(self.grid, 0)
     neighbor_candidate = copy.deepcopy(self)
-    grid = neighbor_candidate.grid
+    state = neighbor_candidate.state
+    size = self.size
     if move == "UP" and x_0 > 0:
-      grid[x_0][y_0], grid[x_0 - 1][y_0] = grid[x_0 - 1][y_0], 0
+      state[x_0 * size + y_0], state[(x_0 - 1) * size + y_0] = state[(x_0 - 1) * size + y_0], 0
     elif move == "DOWN" and x_0 < self.size - 1:
-      grid[x_0][y_0], grid[x_0 + 1][y_0] = grid[x_0 + 1][y_0], 0
+      state[x_0 * size + y_0], state[(x_0 + 1) * size + y_0] = state[(x_0 + 1) * size + y_0], 0
     elif move == "LEFT" and y_0 > 0:
-      grid[x_0][y_0], grid[x_0][y_0 - 1] = grid[x_0][y_0 - 1], 0
+      state[x_0 * size + y_0], state[x_0 * size + y_0 - 1] = state[x_0 * size + y_0 - 1], 0
     elif move == "RIGHT" and y_0 < self.size - 1:
-      grid[x_0][y_0], grid[x_0][y_0 + 1] = grid[x_0][y_0 + 1], 0
-    neighbor_candidate.state = list(np.array(grid).flatten())
+      state[x_0 * size + y_0], state[x_0 * size + y_0 + 1] = state[x_0 * size + y_0 + 1], 0
+    neighbor_candidate.state = state
     return neighbor_candidate
 
   def is_solved(self):
