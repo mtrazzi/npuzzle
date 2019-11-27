@@ -1,11 +1,5 @@
 import numpy as np
 
-def heuristic(puzzle, name='tiles-out'):
-  #TODO: add manhattan and euclidean heuristics
-  s = puzzle.size
-  g = puzzle.goal
-  if name == 'tiles-out':
-    return s ** 2 - len(set(puzzle.puzzle_list) & set(puzzle.goal))
 
 def reconstruct_path(came_from, current):
   total_path = [current]
@@ -40,7 +34,7 @@ class AStar(object):
     # heuristic maps (g[0] correspond to g(state_0))
     # IN THE REST OF THE CODE TRIED TO DEAL WITH STATES_ID TO NOT PASS GIGANTIC PUZZLES... MAYBE CONFUSING
     self.g = [0]
-    self.h = [heuristic(self.states[0])]
+    self.h = [self.states[0].heuristic()]
     self.f = [self.h[0]]
 
   def run(self):

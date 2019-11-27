@@ -3,23 +3,34 @@ import copy
 
 from core.npuzzle_gen import make_goal
 
+def find_coordinates(tab, elt):
+  for i in range(len(tab)):
+    for j in range(len(tab)):
+      if tab[i][j] == elt:
+        return i, j
+
 class Puzzle(object):
   def __init__(self, puzzle):
-    self.puzzle_list = puzzle
     self.size = int(np.sqrt(len(puzzle)))
-    self.goal = make_goal(self.size)
-    self.puzzle_grid = [[self.puzzle_list[x * self.size + y] for y in range(self.size)] for x in range(self.size)]
+    self.grid = [[puzzle[x * self.size + y] for y in range(self.size)] for x in range(self.size)]
+    self.goal = [[make_goal(self.size)[x * self.size + y] for y in range(self.size)] for x in range(self.size)]
+
+  def heuristic(self, name='tiles-out'):
+    s = 0
+    for x in range (self.size):
+      for y in range (self.size):
+        x_g, y_g = find_coordinates(self.goal, self.grid[x][y])
+        if name == 'tiles-out':
+          s += x != x_g or y != y_g
+        elif name == 'manhattan':
+          s += abs(x-x_g) + abs(y-y_g)
+        elif name == 'euclidean':
+          s += np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
 
   def next_state(self, move):
-    # finding the coordinates of the empty cell
-    for i in range(self.size):
-      for j in range(self.size):
-        if self.puzzle_grid[i][j] == 0:
-          x_0, y_0 = i, j
-
-    # making the switch
+    x_0, y_0 = find_coordinates(self.grid, 0)
     neighbor_candidate = copy.copy(self)
-    grid = neighbor_candidate.puzzle_grid
+    grid = neighbor_candidate.grid
     if move == "UP" and x_0 > 0:
       grid[x_0][y_0], grid[x_0 - 1][y_0] = grid[x_0 - 1][y_0], 0
     if move == "DOWN" and x_0 < self.size - 1:
@@ -31,14 +42,14 @@ class Puzzle(object):
     return neighbor_candidate
 
   def is_solved(self):
-    return self.puzzle_list == self.goal
+    return self.grid == self.goal
 
   def print_state(self):
     s = self.size
     print("%d" % s)
     for y in range(s):
       for x in range(s):
-        print("%s" % (str(self.puzzle_list[x + y*s]).ljust(s + 1)), end='')
+        print("%s" % (str(self.grid[x][y]).ljust(s + 1)), end='')
       print()
 
   def neighbors(self):
