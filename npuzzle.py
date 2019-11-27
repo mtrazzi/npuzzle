@@ -4,7 +4,7 @@ import argparse
 import random
 
 from core.npuzzle_gen import generate_puzzle_tab
-from core.a_star import AStar
+from core.a_star import A_Star
 from core.puzzle import Puzzle
 
 if __name__ == "__main__":
@@ -26,5 +26,6 @@ if __name__ == "__main__":
   print("Our Puzzle is solved? {}".format(puzzle.is_solved()))
   puzzle.print_state()
 
-  # astar = AStar(puzzle)
-  # astar.run()
+  totalPath = A_Star(puzzle)
+  if len(totalPath) == 0:
+    print("No Solution found.")

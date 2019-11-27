@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+import numpy as np
 
 def make_puzzle(s, solvable, iterations):
   def swap_empty(p):
@@ -59,8 +60,8 @@ def make_goal(s):
 def puzzle_from_text(filename, dir_name='puzzles'):
   path = os.path.join(dir_name, filename)
   with open(path, 'r') as f:
-    lines = [list(l.rstrip('\n')) for l in f]
-  return lines[1:]
+    lines = [[int(x) for x in l.rstrip('\n').split(' ')] for l in f]
+  return list(np.array(lines[1:]).flatten())
 
 def generate_puzzle_tab(solvable, unsolvable, size, iterations, filename):
   if filename:
