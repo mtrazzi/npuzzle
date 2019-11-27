@@ -7,7 +7,7 @@ def find_coord_in_list(l, elt):
       if l[i * size + j] == elt:
         return i, j
 
-def heuristic(goal, state, name='tiles-out'):
+def heuristic(goal, state, name='manhattan'):
   s = 0
   size = int(np.sqrt(len(goal)))
   for x in range (size):
@@ -42,7 +42,7 @@ def A_Star(start, hname='euclidean'):
   gScore = {}
   gScore[start] = 0
   fScore = {}
-  fScore[start] = heuristic(start.state, start.goal, hname)
+  fScore[start] = heuristic(start.goal, start.state, hname)
 
   iteration = 0
   nbOpen = 1
@@ -57,14 +57,14 @@ def A_Star(start, hname='euclidean'):
       return totalPath, len(totalPath) - 1, nbOpen, nbSelected
 
     openSet.remove(current)
-    fScore[current] = np.Inf
+    del fScore[current]
     for neighbor in current.neighbors():
       nbSelected += 1
       tentative_gScore = gScore[current] + 1
       if tentative_gScore < gScore.get(neighbor, np.Inf):
         cameFrom[neighbor] = current
         gScore[neighbor] = tentative_gScore
-        fScore[neighbor] = gScore[neighbor] + heuristic(neighbor.state, neighbor.goal, hname)
+        fScore[neighbor] = gScore[neighbor] + heuristic(neighbor.goal, neighbor.state, hname)
         if neighbor not in openSet:
           openSet.append(neighbor)
           nbOpen += 1
