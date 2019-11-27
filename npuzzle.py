@@ -2,6 +2,7 @@
 
 import argparse
 import random
+import sys
 
 from core.npuzzle_gen import generate_puzzle_tab
 from core.a_star import A_Star
@@ -23,9 +24,11 @@ if __name__ == "__main__":
   puzzle_tab = generate_puzzle_tab(args.solvable, args.unsolvable, args.size, args.iterations, args.filename)
 
   puzzle = Puzzle(puzzle_tab)
-  print("Our Puzzle is solved? {}".format(puzzle.is_solved()))
   puzzle.print_state()
 
+  if not puzzle.is_solvable():
+    print("Puzzle is not solvable, exiting.")
+    sys.exit(0)
   totalPath = A_Star(puzzle)
   if len(totalPath) == 0:
     print("No Solution found.")

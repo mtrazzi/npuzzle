@@ -62,3 +62,19 @@ class Puzzle(object):
       if neighbor.state == self.state:
         neighbors.remove(neighbor)
     return neighbors
+  
+  def nb_permutation(self):
+    # go through elements of grid following the path of goal (e.g. a snail)
+    nb_inv = 0
+    for i in range(1, self.size ** 2):
+      x_i, y_i = find_coordinates(self.goal_grid, i)
+      # check number of inversions ahead
+      for j in range(i + 1, self.size ** 2):
+        x_j, y_j = find_coordinates(self.goal_grid, j)
+        nb_inv += self.grid[x_i][y_i] > self.grid[x_j][y_j]
+    return nb_inv
+
+  def is_solvable(self):
+    nb_per = self.nb_permutation()
+    x_0, _ = find_coordinates(self.grid, 0)
+    return nb_per % 2 == 1 if self.size % 2 == 0 else (self.size - x_0 - nb_per) % 2 == 1
