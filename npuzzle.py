@@ -26,8 +26,8 @@ if __name__ == "__main__":
   puzzle = Puzzle(puzzle_tab)
   puzzle.print_state()
 
-  if not puzzle.is_solvable():
-    print("Puzzle is not solvable, exiting.")
+  if not puzzle.is_snail_solvable():
+    print("Puzzle is not snail solvable, exiting.")
     sys.exit(0)
   totalPath = A_Star(puzzle)
   if len(totalPath) == 0:

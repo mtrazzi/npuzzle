@@ -11,7 +11,7 @@
       "module": "npuzzle",
       "args": [
         "-f",
-        "1.txt"
+        "4.txt"
       ]
     }
   ]
