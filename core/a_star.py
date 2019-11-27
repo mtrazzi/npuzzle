@@ -53,8 +53,8 @@ def A_Star(start, hname='euclidean'):
       print(f'iteration #{iteration}')
     current = find_lowest_fScore(openSet, fScore)
     if current.state == current.goal:
-      totalPath = reconstruct_path(cameFrom, current),
-      return totalPath, len(totalPath), nbOpen, nbSelected
+      totalPath = reconstruct_path(cameFrom, current)
+      return totalPath, len(totalPath) - 1, nbOpen, nbSelected
 
     openSet.remove(current)
     fScore[current] = np.Inf

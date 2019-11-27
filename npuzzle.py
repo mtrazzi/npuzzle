@@ -36,5 +36,11 @@ if __name__ == "__main__":
     print("No Solution found.")
 
   print(f"Complexity in time: {nbOpen}\nComplexity in Size: {nbSelected}\n\nMoves Required: {pathLen}")
+  stateId = 0
   for path in totalPath:
-    print(path)
+    print(f"\nState {stateId}:")
+    stateId += 1
+    for i in range(puzzle.size**2):
+      print(path.state[i], end=" ")
+      if (i+1) % puzzle.size == 0:
+        print()
