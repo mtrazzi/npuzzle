@@ -16,6 +16,7 @@ if __name__ == "__main__":
   parser.add_argument("-u", "--unsolvable", action="store_true", default=False, help="Forces generation of an unsolvable puzzle")
   parser.add_argument("-i", "--iterations", type=int, default=10000, help="Number of passes")
   parser.add_argument("-f", "--filename", type=str, default=None, help="Test file from puzzles/")
+  parser.add_argument("--heuristic", type=str, default='manhattan', choices=['manhattan', 'euclidean', 'tiles-out'], help="Heuristic function; must be admissible.")
 
   args = parser.parse_args()
 

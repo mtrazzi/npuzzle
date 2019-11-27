@@ -15,7 +15,7 @@ def find_lowest_fScore(openSet, fScore):
       current_state = state
   return current_state
 
-def A_Star(start, hname='tiles-out'):
+def A_Star(start, hname='euclidean'):
   openSet = [start]
   cameFrom = {}
   gScore = {}
@@ -36,7 +36,7 @@ def A_Star(start, hname='tiles-out'):
     #   if openSet[idx].state == current.state:
     #     openSet.remove(openSet[idx])
 
-    # openSet.remove(current)
+    openSet.remove(current)
     fScore[current] = np.Inf
     for neighbor in current.neighbors():
       tentative_gScore = gScore[current] + 1

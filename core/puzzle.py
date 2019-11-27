@@ -69,9 +69,10 @@ class Puzzle(object):
     for i in range(1, self.size ** 2):
       x_i, y_i = find_coordinates(self.goal_grid, i)
       # check number of inversions ahead
-      for j in range(i + 1, self.size ** 2):
+      for j in list(range(i + 1, self.size ** 2)) + [0]:
         x_j, y_j = find_coordinates(self.goal_grid, j)
-        nb_inv += self.grid[x_i][y_i] > self.grid[x_j][y_j]
+        if self.grid[x_i][y_i] > 0 and self.grid[x_j][y_j] > 0:
+          nb_inv += self.grid[x_i][y_i] > self.grid[x_j][y_j]
     return nb_inv
 
   def is_in_row_solvable(self):
@@ -81,4 +82,4 @@ class Puzzle(object):
     return nb_per % 2 == 0 if self.size % 2 == 1 else (self.size - x_0 - nb_per) % 2 == 1
 
   def is_snail_solvable(self):
-    return not self.is_in_row_solvable()
+    return self.nb_permutation() % 2 == 0
