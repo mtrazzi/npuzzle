@@ -30,6 +30,11 @@ if __name__ == "__main__":
   if not puzzle.is_snail_solvable():
     print("Puzzle is not snail solvable, exiting.")
     sys.exit(0)
-  totalPath = A_Star(puzzle)
-  if len(totalPath) == 0:
+
+  totalPath, pathLen, nbOpen, nbSelected = A_Star(puzzle)
+  if pathLen == 0:
     print("No Solution found.")
+
+  print(f"Complexity in time: {nbOpen}\nComplexity in Size: {nbSelected}\n\nMoves Required: {pathLen}")
+  for path in totalPath:
+    print(path)

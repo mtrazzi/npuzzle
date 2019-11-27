@@ -22,11 +22,11 @@ def heuristic(goal, state, name='tiles-out'):
   return s
 
 def reconstruct_path(cameFrom, current):
-  total_path = [current]
+  totalPath = [current]
   while current in cameFrom.keys():
     current = cameFrom[current]
-    total_path.insert(0, current)
-  return total_path
+    totalPath.insert(0, current)
+  return totalPath
 
 def find_lowest_fScore(openSet, fScore):
   current_state = openSet[0]
@@ -42,26 +42,31 @@ def A_Star(start, hname='euclidean'):
   gScore = {}
   gScore[start] = 0
   fScore = {}
-  fScore[start] = start.heuristic(hname)
+  fScore[start] = heuristic(start.state, start.goal, hname)
 
   iteration = 0
+  nbOpen = 1
+  nbSelected = 1
   while len(openSet) != 0:
     iteration += 1
     if (iteration % 100 == 0):
       print(f'iteration #{iteration}')
     current = find_lowest_fScore(openSet, fScore)
     if current.state == current.goal:
-      return reconstruct_path(cameFrom, current)
+      totalPath = reconstruct_path(cameFrom, current),
+      return totalPath, len(totalPath), nbOpen, nbSelected
 
     openSet.remove(current)
     fScore[current] = np.Inf
     for neighbor in current.neighbors():
+      nbSelected += 1
       tentative_gScore = gScore[current] + 1
       if tentative_gScore < gScore.get(neighbor, np.Inf):
         cameFrom[neighbor] = current
         gScore[neighbor] = tentative_gScore
-        fScore[neighbor] = gScore[neighbor] + neighbor.heuristic(hname)
+        fScore[neighbor] = gScore[neighbor] + heuristic(neighbor.state, neighbor.goal, hname)
         if neighbor not in openSet:
           openSet.append(neighbor)
+          nbOpen += 1
 
-  return []
+  return [], 0, nbOpen, nbSelected

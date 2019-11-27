@@ -49,7 +49,7 @@ class Puzzle(object):
       if neighbor.state == self.state:
         neighbors.remove(neighbor)
     return neighbors
-  
+
   def nb_permutation(self):
     # go through elements of grid following the path of goal (e.g. a snail)
     nb_inv = 0
@@ -65,7 +65,6 @@ class Puzzle(object):
   def is_in_row_solvable(self):
     nb_per = self.nb_permutation()
     x_0, _ = find_coordinates(self.grid, 0)
-    print(f'nb_per: {nb_per} and size is: {self.size}')
     return nb_per % 2 == 0 if self.size % 2 == 1 else (self.size - x_0 - nb_per) % 2 == 1
 
   def is_snail_solvable(self):
