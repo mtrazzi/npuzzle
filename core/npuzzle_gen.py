@@ -1,7 +1,7 @@
-import os
 import sys
 import random
 import numpy as np
+import re
 
 def make_puzzle(s, solvable, iterations):
   def swap_empty(p):
@@ -20,7 +20,7 @@ def make_puzzle(s, solvable, iterations):
     p[swi] = 0
 
   p = make_goal(s)
-  for i in range(iterations):
+  for _ in range(iterations):
     swap_empty(p)
 
   if not solvable:
@@ -57,37 +57,41 @@ def make_goal(s):
 
   return puzzle
 
-def puzzle_from_text(filename, dir_name='puzzles'):
-  path = os.path.join(dir_name, filename)
-  with open(path, 'r') as f:
-    raw_lines = [line for line in f]
-    for idx,line in enumerate(raw_lines):
-      if line[0] == '#':
-        raw_lines.remove(line)
-      elif '#' in line:
-        raw_lines[idx] = line[:line.index('#')]
-    lines = [[int(x) for x in l.rstrip('\n').split()] for l in raw_lines]
-  return list(np.array(lines[1:]).flatten())
+def puzzle_from_text(filename):
+  size = 0
+  puzzle = []
+  with open(filename, 'r') as f:
+    lines = [re.sub('#.*', '', line.strip()) for line in f]
+    lines = [line for line in lines if line]
+    try:
+      size = int(lines[0])
+      if len(lines[1:]) != size:
+        print ("Error: Input size doesn't match puzzle height.")
+        return []
+      for line in lines[1:]:
+        split = line.split()
+        if size != len(split):
+          print ("Error: Input size doesn't match puzzle width.")
+          return []
+        puzzle.extend([int(x) for x in split])
+    except:
+      print("Error: File format not supported please try with another file.")
+      return []
 
-def generate_puzzle_tab(solvable, unsolvable, size, iterations, filename):
+  return puzzle
+
+def generate_puzzle_tab(solvable, size, iterations, filename):
   if filename:
-    return puzzle_from_text(filename)
-
-  if solvable and unsolvable:
-    print("Can't be both solvable AND unsolvable, dummy !")
-    sys.exit(1)
+    puzzle = puzzle_from_text(filename)
+    if len(puzzle) == 0:
+      sys.exit(1)
+    return puzzle
 
   if size < 3:
     print("Can't generate a puzzle with size lower than 2. It says so in the help. Dummy.")
     sys.exit(1)
 
-  if not solvable and not unsolvable:
-    solv = random.choice([True, False])
-  elif solvable:
-    solv = True
-  elif unsolvable:
-    solv = False
+  if solvable is None:
+    solvable = random.choice([True, False])
 
-  s = size
-
-  return make_puzzle(s, solvable=solv, iterations=iterations)
+  return make_puzzle(size, solvable, iterations=iterations)

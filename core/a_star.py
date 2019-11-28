@@ -1,5 +1,5 @@
 import numpy as np
-from core.puzzle import Puzzle
+from core.puzzle import Puzzle, neighbors
 
 def heuristic_aux(x, y, x_g, y_g, name):
   if name == 'tiles-out':
@@ -36,9 +36,7 @@ def find_lowest_fScore(openSet, fScore):
       current_state = state
   return current_state
 
-def A_Star(start, hname='euclidean'):
-  state = tuple(start.state)
-  goal = tuple(start.goal)
+def A_Star(state, goal, size, hname='euclidean'):
   openSet = [state]
   cameFrom = {}
   gScore = {}
@@ -57,7 +55,7 @@ def A_Star(start, hname='euclidean'):
 
     openSet.remove(current)
     del fScore[current]
-    for neighbor in Puzzle(current).neighbors():
+    for neighbor in neighbors(current, size):
       tentative_gScore = gScore[current] + 1
       if tentative_gScore < gScore.get(neighbor, np.Inf):
         cameFrom[neighbor] = current
