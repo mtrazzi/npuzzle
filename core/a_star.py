@@ -1,25 +1,27 @@
 import numpy as np
+from core.puzzle import Puzzle
 
-def find_coord_in_list(l, elt):
-  size = int(np.sqrt(len(l)))
-  for i in range(size):
-    for j in range(size):
-      if l[i * size + j] == elt:
-        return i, j
+def heuristic_aux(x, y, x_g, y_g, name):
+  if name == 'tiles-out':
+    return x != x_g or y != y_g
+  elif name == 'manhattan':
+    return abs(x-x_g) + abs(y-y_g)
+  elif name == 'euclidean':
+    return np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
 
-def heuristic(goal, state, name='manhattan'):
-  s = 0
+def heuristic(goal_str, state_str, name='manhattan'):
+  state = [int(x) for x in state_str[1:-1].split(',')]
+  goal = [int(x) for x in goal_str[1:-1].split(',')]
   size = int(np.sqrt(len(goal)))
+
+  coord_goal = np.zeros((size ** 2, 2)) # in index i coordinates of tile i in goal
+  coord_state = np.zeros((size ** 2,2)) # in index i coordinates of tile i in state
   for x in range (size):
     for y in range (size):
-      x_g, y_g = find_coord_in_list(goal, state[x * size + y])
-      if name == 'tiles-out':
-        s += x != x_g or y != y_g
-      elif name == 'manhattan':
-        s += abs(x-x_g) + abs(y-y_g)
-      elif name == 'euclidean':
-        s += np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
-  return s
+      coord_goal[goal[x * size + y]] = [x,y]
+      coord_state[state[x * size + y]] = [x,y]
+
+  return np.sum([heuristic_aux(coord_state[i][0], coord_state[i][1], coord_goal[i][0], coord_goal[i][1], name) for i in range(size)])
 
 def reconstruct_path(cameFrom, current):
   totalPath = [current]
@@ -37,35 +39,32 @@ def find_lowest_fScore(openSet, fScore):
   return current_state
 
 def A_Star(start, hname='euclidean'):
-  openSet = [start]
+  state = str(start.state)
+  goal = str(start.goal)
+  openSet = [state]
   cameFrom = {}
   gScore = {}
-  gScore[start] = 0
+  gScore[state] = 0
   fScore = {}
-  fScore[start] = heuristic(start.goal, start.state, hname)
+  fScore[state] = heuristic(goal, state, hname)
 
-  iteration = 0
   nbOpen = 1
   max_open_set = 1
   while len(openSet) != 0:
     max_open_set = max(max_open_set, len(openSet))
-    iteration += 1
-    if (iteration % 100 == 0):
-      print(f'iteration #{iteration}')
-      print(f"nbOpen #{nbOpen}")
     current = find_lowest_fScore(openSet, fScore)
-    if current.state == current.goal:
+    if current == goal:
       totalPath = reconstruct_path(cameFrom, current)
       return totalPath, len(totalPath) - 1, nbOpen, max_open_set
 
     openSet.remove(current)
     del fScore[current]
-    for neighbor in current.neighbors():
+    for neighbor in Puzzle(current).neighbors():
       tentative_gScore = gScore[current] + 1
       if tentative_gScore < gScore.get(neighbor, np.Inf):
         cameFrom[neighbor] = current
         gScore[neighbor] = tentative_gScore
-        fScore[neighbor] = gScore[neighbor] + heuristic(neighbor.goal, neighbor.state, hname)
+        fScore[neighbor] = gScore[neighbor] + heuristic(goal, neighbor, hname)
         if neighbor not in openSet:
           openSet.append(neighbor)
           nbOpen += 1

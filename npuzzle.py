@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
   puzzle_tab = generate_puzzle_tab(args.solvable, args.unsolvable, args.size, args.iterations, args.filename)
 
-  puzzle = Puzzle(puzzle_tab)
+  puzzle = Puzzle(str(puzzle_tab))
   puzzle.print_state()
 
   if not puzzle.is_snail_solvable():
@@ -41,6 +41,6 @@ if __name__ == "__main__":
     print(f"\nState {stateId}:")
     stateId += 1
     for i in range(puzzle.size**2):
-      print(path.state[i], end=" ")
+      print(Puzzle(path).state[i], end=" ")
       if (i+1) % puzzle.size == 0:
         print()
