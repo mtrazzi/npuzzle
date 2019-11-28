@@ -10,9 +10,8 @@ def find_coordinates(tab, elt):
         return i, j
 
 class Puzzle(object):
-  def __init__(self, puzzle_str):
+  def __init__(self, puzzle):
     # convert back to list
-    puzzle = [int(x) for x in puzzle_str[1:-1].split(',')]
     self.state = puzzle
     self.size = int(np.sqrt(len(puzzle)))
     self.goal = make_goal(self.size)
@@ -21,7 +20,7 @@ class Puzzle(object):
 
   def next_state(self, move):
     x_0, y_0 = find_coordinates(self.grid, 0)
-    state = copy.deepcopy(self.state)
+    state = list(self.state)
     size = self.size
     if move == "UP" and x_0 > 0:
       state[x_0 * size + y_0], state[(x_0 - 1) * size + y_0] = state[(x_0 - 1) * size + y_0], 0
@@ -31,10 +30,7 @@ class Puzzle(object):
       state[x_0 * size + y_0], state[x_0 * size + y_0 - 1] = state[x_0 * size + y_0 - 1], 0
     elif move == "RIGHT" and y_0 < self.size - 1:
       state[x_0 * size + y_0], state[x_0 * size + y_0 + 1] = state[x_0 * size + y_0 + 1], 0
-    return str(state)
-
-  def is_solved(self):
-    return self.grid == self.goal_grid
+    return tuple(state)
 
   def print_state(self):
     s = self.size
@@ -47,7 +43,7 @@ class Puzzle(object):
   def neighbors(self):
     neighbors = [self.next_state(move) for move in [ "UP", "RIGHT", "LEFT", "DOWN"]]
     for neighbor in neighbors:
-      if neighbor == str(self.state):
+      if neighbor == self.state:
         neighbors.remove(neighbor)
     return neighbors
 

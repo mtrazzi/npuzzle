@@ -9,9 +9,7 @@ def heuristic_aux(x, y, x_g, y_g, name):
   elif name == 'euclidean':
     return np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
 
-def heuristic(goal_str, state_str, name='manhattan'):
-  state = [int(x) for x in state_str[1:-1].split(',')]
-  goal = [int(x) for x in goal_str[1:-1].split(',')]
+def heuristic(goal, state, name='manhattan'):
   size = int(np.sqrt(len(goal)))
 
   coord_goal = np.zeros((size ** 2, 2)) # in index i coordinates of tile i in goal
@@ -21,7 +19,7 @@ def heuristic(goal_str, state_str, name='manhattan'):
       coord_goal[goal[x * size + y]] = [x,y]
       coord_state[state[x * size + y]] = [x,y]
 
-  return np.sum([heuristic_aux(coord_state[i][0], coord_state[i][1], coord_goal[i][0], coord_goal[i][1], name) for i in range(size)])
+  return np.sum([heuristic_aux(coord_state[i][0], coord_state[i][1], coord_goal[i][0], coord_goal[i][1], name) for i in range(size ** 2)])
 
 def reconstruct_path(cameFrom, current):
   totalPath = [current]
@@ -39,8 +37,8 @@ def find_lowest_fScore(openSet, fScore):
   return current_state
 
 def A_Star(start, hname='euclidean'):
-  state = str(start.state)
-  goal = str(start.goal)
+  state = tuple(start.state)
+  goal = tuple(start.goal)
   openSet = [state]
   cameFrom = {}
   gScore = {}

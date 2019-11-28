@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
   puzzle_tab = generate_puzzle_tab(args.solvable, args.unsolvable, args.size, args.iterations, args.filename)
 
-  puzzle = Puzzle(str(puzzle_tab))
+  puzzle = Puzzle(tuple(puzzle_tab))
   puzzle.print_state()
 
   if not puzzle.is_snail_solvable():

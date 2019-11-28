@@ -60,7 +60,7 @@ def make_goal(s):
 def puzzle_from_text(filename, dir_name='puzzles'):
   path = os.path.join(dir_name, filename)
   with open(path, 'r') as f:
-    lines = [[int(x) for x in l.rstrip('\n').split(' ')] for l in f]
+    lines = [[int(x) for x in l.rstrip('\n').split()] for l in f]
   return list(np.array(lines[1:]).flatten())
 
 def generate_puzzle_tab(solvable, unsolvable, size, iterations, filename):
