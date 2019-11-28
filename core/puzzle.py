@@ -19,8 +19,7 @@ class Puzzle(object):
 
   def next_state(self, move):
     x_0, y_0 = find_coordinates(self.grid, 0)
-    neighbor_candidate = copy.deepcopy(self)
-    state = neighbor_candidate.state
+    state = copy.deepcopy(self.state)
     size = self.size
     if move == "UP" and x_0 > 0:
       state[x_0 * size + y_0], state[(x_0 - 1) * size + y_0] = state[(x_0 - 1) * size + y_0], 0
@@ -30,8 +29,7 @@ class Puzzle(object):
       state[x_0 * size + y_0], state[x_0 * size + y_0 - 1] = state[x_0 * size + y_0 - 1], 0
     elif move == "RIGHT" and y_0 < self.size - 1:
       state[x_0 * size + y_0], state[x_0 * size + y_0 + 1] = state[x_0 * size + y_0 + 1], 0
-    neighbor_candidate.state = state
-    return neighbor_candidate
+    return Puzzle(state)
 
   def is_solved(self):
     return self.grid == self.goal_grid

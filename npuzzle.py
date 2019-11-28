@@ -35,7 +35,7 @@ if __name__ == "__main__":
   if pathLen == 0:
     print("No Solution found.")
 
-  print(f"Complexity in time: {nbOpen}\nComplexity in Size: {nbSelected}\n\nMoves Required: {pathLen}")
+  print(f"Complexity in time: {nbOpen}\nComplexity in size: {nbSelected}\n\nNumber of moves required: {pathLen}")
   stateId = 0
   for path in totalPath:
     print(f"\nState {stateId}:")

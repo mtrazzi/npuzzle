@@ -46,20 +46,21 @@ def A_Star(start, hname='euclidean'):
 
   iteration = 0
   nbOpen = 1
-  nbSelected = 1
+  max_open_set = 1
   while len(openSet) != 0:
+    max_open_set = max(max_open_set, len(openSet))
     iteration += 1
     if (iteration % 100 == 0):
       print(f'iteration #{iteration}')
+      print(f"nbOpen #{nbOpen}")
     current = find_lowest_fScore(openSet, fScore)
     if current.state == current.goal:
       totalPath = reconstruct_path(cameFrom, current)
-      return totalPath, len(totalPath) - 1, nbOpen, nbSelected
+      return totalPath, len(totalPath) - 1, nbOpen, max_open_set
 
     openSet.remove(current)
     del fScore[current]
     for neighbor in current.neighbors():
-      nbSelected += 1
       tentative_gScore = gScore[current] + 1
       if tentative_gScore < gScore.get(neighbor, np.Inf):
         cameFrom[neighbor] = current
@@ -69,4 +70,4 @@ def A_Star(start, hname='euclidean'):
           openSet.append(neighbor)
           nbOpen += 1
 
-  return [], 0, nbOpen, nbSelected
+  return [], 0, nbOpen, max_open_set
