@@ -1,17 +1,15 @@
-import numpy as np # Remove numpy
-import copy
-
 from core.npuzzle_gen import make_goal
 
 def find_coordinates(state, size, elt):
   idx = state.index(elt)
   return (idx // size), (idx % size)
 
-def print_state(state, size): # Need refactoring
-  state = np.array(state)
-  for i in range(size):
-    idx = i * size
-    print(state[idx:idx+size])
+def print_state(state, size):
+  padding = len(str(size ** 2))
+  for i in range(size ** 2):
+    print(f"{state[i]:{padding}}", end=" ")
+    if (i + 1) % size == 0:
+      print("")
 
 def next_state(state, size, move):
   x_0, y_0 = find_coordinates(state, size, 0)

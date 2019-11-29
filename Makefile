@@ -1,4 +1,4 @@
-NAME := core
+NAME := npuzzle
 
 .PHONY: install test clean
 
@@ -10,6 +10,7 @@ test:
 
 clean:
 	@python3 setup.py clean
+	@rm -rf __pycache__/								2> /dev/null || true
 	@rm -rf $(NAME)/__pycache__/				2> /dev/null || true
 	@rm -rf tests/__pycache__/					2> /dev/null || true
 	@rm -rf $(NAME).egg-info/ 					2> /dev/null || true

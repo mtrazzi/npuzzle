@@ -66,30 +66,24 @@ def puzzle_from_text(filename):
     try:
       size = int(lines[0])
       if len(lines[1:]) != size:
-        print ("Error: Input size doesn't match puzzle height.")
-        return []
+        raise Exception("Error: Input size doesn't match puzzle height.")
+
       for line in lines[1:]:
         split = line.split()
         if size != len(split):
-          print ("Error: Input size doesn't match puzzle width.")
-          return []
+          raise Exception("Error: Input size doesn't match puzzle width.")
         puzzle.extend([int(x) for x in split])
     except:
-      print("Error: File format not supported please try with another file.")
-      return []
+      raise Exception("Error: File format not supported please try with another file.")
 
   return puzzle
 
 def generate_puzzle_tab(solvable, size, iterations, filename):
   if filename:
-    puzzle = puzzle_from_text(filename)
-    if len(puzzle) == 0:
-      sys.exit(1)
-    return puzzle
+    return puzzle_from_text(filename)
 
   if size < 3:
-    print("Can't generate a puzzle with size lower than 2. It says so in the help. Dummy.")
-    sys.exit(1)
+    raise Exception("Can't generate a puzzle with size lower than 2. It says so in the help.")
 
   if solvable is None:
     solvable = random.choice([True, False])
