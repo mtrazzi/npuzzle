@@ -33,11 +33,11 @@ def neighbors(state, size):
   return neighbors
 
 class Puzzle(object):
-  def __init__(self, puzzle):
+  def __init__(self, state, goal, size):
     # convert back to list
-    self.state = tuple(puzzle)
-    self.size = int(len(puzzle) ** (1/2))
-    self.goal = tuple(make_goal(self.size))
+    self.state = tuple(state)
+    self.goal = tuple(goal)
+    self.size = size
 
   def nb_permutation(self):
     # go through elements of grid following the path of goal (e.g. a snail)
