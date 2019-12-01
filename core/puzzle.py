@@ -52,7 +52,7 @@ class Puzzle(object):
           nb_inv += grid[x_i][y_i] > grid[x_j][y_j]
     return nb_inv
 
-  def is_in_row_solvable(self):
+  def is_row_solvable(self):
     nb_per = self.nb_permutation()
     x_0, _ = find_coordinates(self.state, self.size, 0)
     return nb_per % 2 == 0 if self.size % 2 == 1 else (self.size - x_0 - nb_per) % 2 == 1

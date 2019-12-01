@@ -86,8 +86,9 @@ def puzzle_from_text(filename, _type):
       raise Exception("File format not supported please try with another file.")
   return puzzle, make_goal(size, _type), size
 
-def puzzle_from_stdin(_type):
+def puzzle_from_stdin():
   puzzle = []
+  goal = []
   size = int(input("Puzzle size: "))
   if size < 3:
     raise Exception("Can't generate a puzzle with size lower than 2. It says so in the help.")
@@ -98,11 +99,18 @@ def puzzle_from_stdin(_type):
     if size != len(split):
       raise Exception("Input size doesn't match puzzle width.")
     puzzle.extend([int(x) for x in split])
-  return puzzle, make_goal(size, _type), size
+  print("\nEnter goal arrangement:")
+  for _ in range(size):
+    line = input()
+    split = line.split()
+    if size != len(split):
+      raise Exception("Input size doesn't match puzzle width.")
+    goal.extend([int(x) for x in split])
+  return puzzle, goal, size
 
 def generate_puzzle_tab(solvable, size, _type, iterations, interactive, filename):
   if interactive:
-    return puzzle_from_stdin(_type)
+    return puzzle_from_stdin()
   if filename:
     return puzzle_from_text(filename, _type)
   if size < 3:

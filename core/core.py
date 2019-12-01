@@ -14,8 +14,8 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
     print("Initial State:")
     print_state(puzzle.state, puzzle.size)
 
-  if not puzzle.is_snail_solvable():
-    print("Puzzle is not snail solvable, exiting.")
+  if (_type == 'snail' and not puzzle.is_snail_solvable()) or (_type == 'row' and not puzzle.is_row_solvable()):
+    print(f"Puzzle is not {_type} solvable, exiting.")
     return 0
 
   print("Starting Search...\n")

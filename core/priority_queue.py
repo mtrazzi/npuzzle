@@ -6,11 +6,11 @@ class PriorityQueue(object):
   Attributes
   ----------
   states: list
-  The set of discovered nodes
+    The set of discovered nodes
   gScores: dict
-  For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
+    For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
   fScores: dict
-  For node n, fScore[n] := gScore[n] + h(n). Where h() is an admissible heuristic function.
+    For node n, fScore[n] := gScore[n] + h(n). Where h() is an admissible heuristic function.
   """
   def __init__(self):
     self.states = []
