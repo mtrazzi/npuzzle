@@ -2,22 +2,12 @@ from core.puzzle import neighbors
 from core.priority_queue import PriorityQueue
 from core.heuristics import heuristic
 
-def reconstruct_AStar(cameFrom, current):
+def reconstruct_path(cameFrom, current):
   """Reconstruct path from A*"""
   totalPath = [current]
   while current in cameFrom.keys():
     current = cameFrom[current]
     totalPath.insert(0, current)
-  return totalPath
-
-def reconstruct_BFS(start, state):
-  """Reconstruct path from BFS"""
-  totalPath = []
-  current = state[0]
-  while current != start:
-    totalPath.insert(0, current)
-    state = state[1]
-    current = state[0]
   return totalPath
 
 def BFS(start, goal, size, hname='euclidean'):
@@ -49,7 +39,7 @@ def BFS(start, goal, size, hname='euclidean'):
     maxOpenSet = max(maxOpenSet, openSet.length())
     current = openSet.lowest()
     if current == goal:
-      totalPath = reconstruct_AStar(cameFrom, current)
+      totalPath = reconstruct_path(cameFrom, current)
       return totalPath, len(totalPath) - 1, openSet.nbOpen, maxOpenSet
 
     openSet.remove(current)
@@ -91,7 +81,7 @@ def A_Star(start, goal, size, hname='euclidean'):
     maxOpenSet = max(maxOpenSet, openSet.length())
     current = openSet.lowest()
     if current == goal:
-      totalPath = reconstruct_AStar(cameFrom, current)
+      totalPath = reconstruct_path(cameFrom, current)
       return totalPath, len(totalPath) - 1, openSet.nbOpen, maxOpenSet
 
     openSet.remove(current)

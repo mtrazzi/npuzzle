@@ -30,6 +30,10 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
   state, goal, size = generate_puzzle_tab(solvable, size, _type, iterations, interactive, filename)
   puzzle = Puzzle(state, goal, size)
 
+  if not puzzle.check():
+    print(f"Puzzle is not well formatted, exiting.")
+    return
+
   if not interactive:
     print("Initial State:")
     print_state(puzzle.state, puzzle.size)

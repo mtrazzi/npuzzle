@@ -6,7 +6,7 @@ install:
 	@python3 -m pip install -r requirements.txt
 
 test:
-	@python3 setup.py test || true
+	@python3 setup.py test > log.txt
 
 clean:
 	@python3 setup.py clean

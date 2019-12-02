@@ -71,3 +71,11 @@ class Puzzle(object):
 
   def is_snail_solvable(self):
     return self.nb_permutation() % 2 == 0
+
+  def check(self):
+    for x in range(self.size**2):
+      if x not in self.state:
+        return False
+      if x not in self.goal:
+        return False
+    return True
