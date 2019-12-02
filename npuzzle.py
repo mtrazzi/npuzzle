@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
   args = parser.parse_args()
 
-  if args.interactive is None and args.size is None and args.filename is None:
+  if args.interactive is False and args.size is None and args.filename is None:
     print("One of -i or --size or --filename is required. See -h for help.")
     sys.exit(1)
 

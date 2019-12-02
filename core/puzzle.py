@@ -4,13 +4,6 @@ def find_coordinates(state, size, elt):
   idx = state.index(elt)
   return (idx // size), (idx % size)
 
-def print_state(state, size):
-  padding = len(str(size ** 2))
-  for i in range(size ** 2):
-    print(f"{state[i]:{padding}}", end=" ")
-    if (i + 1) % size == 0:
-      print("")
-
 def next_state(state, size, move):
   x_0, y_0 = find_coordinates(state, size, 0)
   state = list(state)
@@ -26,13 +19,33 @@ def next_state(state, size, move):
   return tuple(state)
 
 def neighbors(state, size):
+  """Give all neighbors for a given State"""
   neighbors = [next_state(state, size, move) for move in [ "UP", "RIGHT", "LEFT", "DOWN"]]
   for neighbor in neighbors:
     if neighbor == state:
       neighbors.remove(neighbor)
   return neighbors
 
+def print_state(state, size):
+  """Print given Puzzle state"""
+  padding = len(str(size ** 2))
+  for i in range(size ** 2):
+    print(f"{state[i]:{padding}}", end=" ")
+    if (i + 1) % size == 0:
+      print("")
+
 class Puzzle(object):
+  """Puzzle class
+
+  Parameters
+  ----------
+  state: list
+    Current puzzle state
+  goal: list
+    State we want to achieve
+  size: int
+    Puzzle size
+  """
   def __init__(self, state, goal, size):
     # convert back to list
     self.state = tuple(state)
@@ -40,12 +53,11 @@ class Puzzle(object):
     self.size = size
 
   def nb_permutation(self):
-    # go through elements of grid following the path of goal (e.g. a snail)
+    """Find number of permutation for a snail disposition"""
     grid = [[self.state[x * self.size + y] for y in range(self.size)] for x in range(self.size)]
     nb_inv = 0
     for i in range(1, self.size ** 2):
       x_i, y_i = find_coordinates(self.goal, self.size, i)
-      # check number of inversions ahead
       for j in list(range(i + 1, self.size ** 2)) + [0]:
         x_j, y_j = find_coordinates(self.goal, self.size, j)
         if grid[x_i][y_i] > 0 and grid[x_j][y_j] > 0:

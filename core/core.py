@@ -1,4 +1,3 @@
-
 import random
 
 from core.npuzzle_gen import generate_puzzle_tab
@@ -6,6 +5,27 @@ from core.search import A_Star, BFS
 from core.puzzle import Puzzle, print_state
 
 def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, filename):
+  """Solve function
+
+  Parameters
+  ----------
+  algorithm: str
+    Name of the algorithm ∈ ['A*', 'BFS']
+  heuristic: str
+    Name of heuristic ∈ ['euclidean', 'manhattan', 'tiles-out']
+  _type: str
+    NPuzzle type ∈ ['snail', 'row']
+  solvable: bool
+    Does the NPuzzle need to be solvable
+  size: int
+    Size of the the NPuzzle
+  iteration: int
+    Number of passes to shuffle the NPuzzle
+  interactive: bool
+    Set interactive mode to generate NPuzzle
+  filename: str
+    Generate NPuzzle from file
+  """
   random.seed()
   state, goal, size = generate_puzzle_tab(solvable, size, _type, iterations, interactive, filename)
   puzzle = Puzzle(state, goal, size)
@@ -13,10 +33,9 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
   if not interactive:
     print("Initial State:")
     print_state(puzzle.state, puzzle.size)
-
-  if (_type == 'snail' and not puzzle.is_snail_solvable()) or (_type == 'row' and not puzzle.is_row_solvable()):
-    print(f"Puzzle is not {_type} solvable, exiting.")
-    return 0
+    if (_type == 'snail' and not puzzle.is_snail_solvable()) or (_type == 'row' and not puzzle.is_row_solvable()):
+      print(f"Puzzle is not {_type} solvable, exiting.")
+      return
 
   print("Starting Search...\n")
   if algorithm == "BFS":

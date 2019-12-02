@@ -3,6 +3,24 @@ import numpy as np
 import re
 
 def make_puzzle(s, _type, solvable, iterations):
+  """Generate a puzzle
+
+  Parameters
+  ----------
+  s: int
+    Puzzle size
+  _type: str
+    Puzzle type ∈ ['snail', 'row']
+  solvable: bool
+    Does the NPuzzle need to be solvable
+  iteration: int
+    Number of passes to shuffle the NPuzzle
+
+  Return
+  ------
+  p: list
+    The Puzzle to be solved
+  """
   def swap_empty(p):
     idx = p.index(0)
     poss = []
@@ -31,15 +49,31 @@ def make_puzzle(s, _type, solvable, iterations):
   return p
 
 def make_goal(size, _type='snail'):
+  """Generate goal
+
+  Parameters
+  ----------
+  size: int
+    Puzzle size
+  _type: str
+    Puzzle type ∈ ['snail', 'row']
+
+  Return
+  ------
+  goal: list
+    The Puzzle Goal
+  """
   goal = make_goal_snail(size) if _type == 'snail' else make_goal_row(size)
   return goal
 
 def make_goal_row(s):
+  """Generate goal for 'row' type NPuzzle"""
   p = [x for x in range(1, s**2)]
   p.append(0)
   return p
 
 def make_goal_snail(s):
+  """Generate goal for 'snail' type NPuzzle"""
   ts = s*s
   puzzle = [-1 for i in range(ts)]
   cur = 1
@@ -65,6 +99,7 @@ def make_goal_snail(s):
   return puzzle
 
 def puzzle_from_text(filename, _type):
+  """Generate a NPuzzle for a given file and type"""
   size = 0
   puzzle = []
   with open(filename, 'r') as f:
@@ -87,6 +122,7 @@ def puzzle_from_text(filename, _type):
   return puzzle, make_goal(size, _type), size
 
 def puzzle_from_stdin():
+  """Generate a NPuzzle from user input"""
   puzzle = []
   goal = []
   size = int(input("Puzzle size: "))
@@ -109,6 +145,30 @@ def puzzle_from_stdin():
   return puzzle, goal, size
 
 def generate_puzzle_tab(solvable, size, _type, iterations, interactive, filename):
+  """Generate function
+
+  Parameters
+  ----------
+  solvable: bool
+    Does the NPuzzle need to be solvable
+  size: int
+    Size of the the NPuzzle
+  _type: str
+    NPuzzle type ∈ ['snail', 'row']
+  iteration: int
+    Number of passes to shuffle the NPuzzle
+  interactive: bool
+    Set interactive mode to generate NPuzzle
+  filename: str
+    Generate NPuzzle from file
+
+  Return
+  ------
+  (state, goal, size): (list, list, int)
+    state: The current state of the puzzle
+    goal : The state we need to achieved if possible
+    size : The size of the puzzle
+  """
   if interactive:
     return puzzle_from_stdin()
   if filename:
