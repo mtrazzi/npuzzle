@@ -17,6 +17,7 @@ if __name__ == "__main__":
   parser.add_argument("-t", "--type", type=str, default="snail", choices=['snail', 'row'], help="NPuzzle type.")
   parser.add_argument("-a", "--algorithm", type=str, default="A*", choices=['A*', 'BFS'], help="Algorithm used for search. Uniform-cost search: Breadth-first search (BFS). Greedy search: A*.")
   parser.add_argument("--heuristic", type=str, default='euclidean', choices=['euclidean', 'manhattan', 'tiles-out', 'uniform-cost'], help="Heuristic function")
+  parser.add_argument("-d", "--demo", action="store_true", default=True, help="Print every step to the solution.")
 
   args = parser.parse_args()
 
@@ -29,7 +30,7 @@ if __name__ == "__main__":
   try:
     Solve(algorithm=args.algorithm, heuristic=args.heuristic,
           _type=args.type, solvable=solvable, size=args.size,
-          iterations=args.iterations, interactive=args.interactive, filename=args.filename)
+          iterations=args.iterations, interactive=args.interactive, filename=args.filename, demo=args.demo)
   except Exception as e:
     print(f"Error: {e}")
     sys.exit(2)
