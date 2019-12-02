@@ -1,10 +1,12 @@
 import random
+import time
+import os
 
 from core.npuzzle_gen import generate_puzzle_tab
 from core.search import A_Star, BFS
 from core.puzzle import Puzzle, print_state
 
-def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, filename):
+def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, filename, demo):
   """Solve function
 
   Parameters
@@ -25,6 +27,8 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
     Set interactive mode to generate NPuzzle
   filename: str
     Generate NPuzzle from file
+  demo: bool
+    Tell how to print the solution
   """
   random.seed()
   state, goal, size = generate_puzzle_tab(solvable, size, _type, iterations, interactive, filename)
@@ -37,6 +41,8 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
   if not interactive:
     print("Initial State:")
     print_state(puzzle.state, puzzle.size)
+    if demo:
+      time.sleep(1)
     if (_type == 'snail' and not puzzle.is_snail_solvable()) or (_type == 'row' and not puzzle.is_row_solvable()):
       print(f"Puzzle is not {_type} solvable, exiting.")
       return
@@ -56,6 +62,9 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
   print(f"\nNumber of moves required: {pathLen}")
   stateId = 0
   for path in totalPath:
+    if demo:
+      time.sleep(1)
+      os.system("clear")
     print(f"\nState {stateId}:")
     print_state(path, puzzle.size)
     stateId += 1
