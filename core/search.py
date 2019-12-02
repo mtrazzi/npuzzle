@@ -20,8 +20,8 @@ def reconstruct_BFS(start, state):
     current = state[0]
   return totalPath
 
-def BFS(start, goal, size):
-  """Breadth-first search algorithm
+def BFS(start, goal, size, hname='euclidean'):
+  """Greedy Best-First Search algorithm
 
   Parameters
   ----------
@@ -40,23 +40,27 @@ def BFS(start, goal, size):
     nbOpen: Number of node opened during search
     maxOpenSet: Maximum simultaneously opened node during search
   """
-  openSet = [[start,]]
-  discovered = [start]
-  nbOpen = 1
-  maxOpenSet = 1
-  while len(openSet) != 0:
-    maxOpenSet = max(maxOpenSet, len(openSet))
-    state = openSet.pop(0)
-    if state[0] == goal:
-      totalPath = reconstruct_BFS(start, state)
-      return totalPath, len(totalPath), nbOpen, maxOpenSet
+  openSet = PriorityQueue().add_bfs(start, heuristic(goal, start, hname))
+  cameFrom = {}
+  closedSet = set()
 
-    for neighbor in neighbors(state[0], size):
-      if neighbor not in discovered:
-        discovered.append(neighbor)
-        nbOpen += 1
-        openSet.append([neighbor, state])
-  return [], 0, nbOpen, maxOpenSet
+  maxOpenSet = 1
+  while openSet.length() != 0:
+    maxOpenSet = max(maxOpenSet, openSet.length())
+    current = openSet.lowest()
+    if current == goal:
+      totalPath = reconstruct_AStar(cameFrom, current)
+      return totalPath, len(totalPath) - 1, openSet.nbOpen, maxOpenSet
+
+    openSet.remove(current)
+    closedSet.add(current)
+    for neighbor in neighbors(current, size):
+      if neighbor in closedSet:
+        continue
+      cameFrom[neighbor] = current
+      if neighbor not in openSet:
+        openSet.add_bfs(neighbor, heuristic(goal, neighbor, hname))
+  return [], 0, openSet.nbOpen, maxOpenSet
 
 def A_Star(start, goal, size, hname='euclidean'):
   """A* search algorithm

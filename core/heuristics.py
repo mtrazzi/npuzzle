@@ -23,6 +23,8 @@ def heuristic_aux(x, y, x_g, y_g, name):
     return abs(x-x_g) + abs(y-y_g)
   elif name == 'euclidean':
     return np.sqrt((x-x_g) ** 2 + (y-y_g) ** 2)
+  elif name == 'uniform-cost':
+    return 0
 
 def heuristic(goal, state, name='euclidean'):
   """Heuristic function
@@ -34,16 +36,16 @@ def heuristic(goal, state, name='euclidean'):
   state: list
     Current Puzzle state
   name: str (Default: 'euclidean')
-    Name of heuristic function to use ∈ ['euclidean', 'manhattan', 'tiles-out']
+    Name of heuristic function to use ∈ ['euclidean', 'manhattan', 'tiles-out', 'uniform-cost']
 
   Returns
   -------
   One of
     'Tiles-out': float
-      Sum of good-positioned tiles
+      Number of tiles in the wrong position
     'Manhattan': float
-      Sum of the horizontal and vertical distances between tiles
-      ∑ |state - goal|
+      Sum of the horizontal and vertical distances between,
+      current position and desired position, i.e. ∑ |state - goal|
     'Euclidean': float
       Sum of the distance between tiles
       ∑ √(x - x_g)² + (y - y_g)²

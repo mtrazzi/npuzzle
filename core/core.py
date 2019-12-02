@@ -12,7 +12,7 @@ def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, 
   algorithm: str
     Name of the algorithm ∈ ['A*', 'BFS']
   heuristic: str
-    Name of heuristic ∈ ['euclidean', 'manhattan', 'tiles-out']
+    Name of heuristic ∈ ['euclidean', 'manhattan', 'tiles-out', 'uniform-cost']
   _type: str
     NPuzzle type ∈ ['snail', 'row']
   solvable: bool

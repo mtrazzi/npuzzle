@@ -25,6 +25,12 @@ class PriorityQueue(object):
     self.nbOpen += 1
     return self
 
+  def add_bfs(self, state, fScore=np.Inf):
+    self.states.append(state)
+    self.fScores[state] = fScore
+    self.nbOpen += 1
+    return self
+
   def lowest(self):
     """Return the state for the lowest fScore"""
     current_state = self.states[0]

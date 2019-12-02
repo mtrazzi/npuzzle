@@ -16,7 +16,7 @@ if __name__ == "__main__":
   parser.add_argument("-f", "--filename", type=str, default=None, help="Generate puzzle from file. Overrides --size.")
   parser.add_argument("-t", "--type", type=str, default="snail", choices=['snail', 'row'], help="NPuzzle type.")
   parser.add_argument("-a", "--algorithm", type=str, default="A*", choices=['A*', 'BFS'], help="Algorithm used for search. Uniform-cost search: Breadth-first search (BFS). Greedy search: A*.")
-  parser.add_argument("--heuristic", type=str, default='euclidean', choices=['euclidean', 'manhattan', 'tiles-out'], help="Heuristic function (Only for Greedy search).")
+  parser.add_argument("--heuristic", type=str, default='euclidean', choices=['euclidean', 'manhattan', 'tiles-out', 'uniform-cost'], help="Heuristic function")
 
   args = parser.parse_args()
 
