@@ -40,7 +40,7 @@ def test_BFS(n_iter):
 
     Solve(algorithm='BFS', heuristic='euclidean',
           _type='snail', solvable=True, size=3,
-          iterations=5, interactive=False, filename=None)
+          iterations=20, interactive=False, filename=None)
     print(f"Time to execute: {timeit.default_timer() - start}\n")
 
 def test_euclidean(n_iter):
@@ -67,7 +67,7 @@ def test_tiles_out(n_iter):
 
     Solve(algorithm='A*', heuristic='tiles-out',
           _type='snail', solvable=True, size=3,
-          iterations=100, interactive=False, filename=None)
+          iterations=25, interactive=False, filename=None)
     print(f"Time to execute: {timeit.default_timer() - start}\n")
 
 def test_uniform_cost(n_iter):

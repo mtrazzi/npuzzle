@@ -10,7 +10,7 @@ print("------------------- A*    TEST -------------------")
 core.test_AStar(3)
 
 print("------------------- BFS   TEST -------------------")
-core.test_BFS(3)
+core.test_BFS(1)
 
 print("----------------- Euclidean TEST -----------------")
 core.test_euclidean(3)
@@ -19,7 +19,7 @@ print("----------------- Manhattan TEST -----------------")
 core.test_manhattan(3)
 
 print("----------------- Tiles-out TEST -----------------")
-core.test_tiles_out(3)
+core.test_tiles_out(1)
 
 print("--------------- Uniform-cost TEST ----------------")
 core.test_uniform_cost(3)

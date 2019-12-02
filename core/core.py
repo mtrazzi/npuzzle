@@ -6,7 +6,7 @@ from core.npuzzle_gen import generate_puzzle_tab
 from core.search import A_Star, BFS
 from core.puzzle import Puzzle, print_state
 
-def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, filename, demo):
+def Solve(algorithm, heuristic, _type, solvable, size, iterations, interactive, filename, demo=False):
   """Solve function
 
   Parameters
