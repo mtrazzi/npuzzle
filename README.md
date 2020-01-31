@@ -2,7 +2,7 @@
 
 About
 -----
->We had to create a program capable of solving [15-puzzles](https://en.wikipedia.org/wiki/15_puzzle) of various sizes in the smallest amount of moves using A*.
+>Solves [15-puzzles](https://en.wikipedia.org/wiki/15_puzzle) of various sizes/configs optimally using A*.
 
 Implemented Algorithms
 ----------------------
